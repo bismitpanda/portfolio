@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Link } from "@tanstack/react-router";
 import { allBlogs } from "content-collections";
 import { Button } from "@/components/ui/button";
+import { formatDate } from "date-fns";
 
 export const Route = createFileRoute("/blog/")({
   component: Page,
@@ -28,7 +29,8 @@ function Page() {
             <div className="grid md:grid-cols-2 gap-8 items-center">
               <div className="order-2 md:order-1">
                 <div className="text-sm font-medium text-zinc-500 mb-2">
-                  {allBlogs[0].category} • {allBlogs[0].date}
+                  {allBlogs[0].category} •{" "}
+                  {formatDate(allBlogs[0].date, "MMMM do, yyyy")}
                 </div>
                 <h2 className="text-4xl md:text-5xl font-bold mb-4 group-hover:text-zinc-600 transition-colors">
                   {allBlogs[0].title}
@@ -47,7 +49,7 @@ function Page() {
               <div className="order-1 md:order-2 overflow-hidden rounded-lg">
                 <div className="aspect-video bg-zinc-200 rounded-lg overflow-hidden">
                   <img
-                    src={allBlogs[0].image || "/placeholder.svg"}
+                    src={allBlogs[0].image}
                     alt={allBlogs[0].title}
                     width={600}
                     height={400}
@@ -69,7 +71,7 @@ function Page() {
             >
               <div className="aspect-video bg-zinc-100 overflow-hidden">
                 <img
-                  src={post.image || "/placeholder.svg"}
+                  src={post.image}
                   alt={post.title}
                   width={400}
                   height={200}
@@ -78,7 +80,7 @@ function Page() {
               </div>
               <div className="p-6">
                 <div className="text-sm font-medium text-zinc-500 mb-2">
-                  {post.category} • {post.date}
+                  {post.category} • {formatDate(post.date, "MMMM do, yyyy")}
                 </div>
                 <h3 className="text-2xl font-bold mb-2 group-hover:text-zinc-600 transition-colors">
                   {post.title}

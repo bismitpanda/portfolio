@@ -142,7 +142,7 @@ function Page() {
                   >
                     <div className="aspect-video bg-muted rounded-lg overflow-hidden transition-transform group-hover:scale-105 duration-500">
                       <img
-                        src={project.image || "/placeholder.svg"}
+                        src={project.image}
                         alt={project.title}
                         width={800}
                         height={600}
@@ -178,7 +178,7 @@ function Page() {
               >
                 <div className="aspect-video bg-muted overflow-hidden">
                   <img
-                    src={project.image || "/placeholder.svg"}
+                    src={project.image}
                     alt={project.title}
                     width={800}
                     height={600}

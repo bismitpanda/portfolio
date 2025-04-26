@@ -6,6 +6,7 @@ import type { MermaidConfig } from "mermaid";
 export function Mermaid({ chart }: { chart: string }) {
   const id = useId();
   const [svg, setSvg] = useState("");
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   const containerRef = useRef<HTMLDivElement>(null!);
 
   useEffect(() => {

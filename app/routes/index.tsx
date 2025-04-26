@@ -3,6 +3,7 @@ import { ArrowRight, Github, Linkedin, Mail, Twitter } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { allBlogs } from "content-collections";
 import { useEffect, useState } from "react";
+import { formatDate } from "date-fns";
 
 export const Route = createFileRoute("/")({
   component: Home,
@@ -264,7 +265,7 @@ function Home() {
               </div>
               <div className="p-6">
                 <div className="text-sm text-muted-foreground mb-2">
-                  {blog.date}
+                  {formatDate(blog.date, "MMMM do, yyyy")}
                 </div>
                 <h3 className="text-2xl font-bold mb-2 group-hover:text-primary transition-colors">
                   {blog.title}

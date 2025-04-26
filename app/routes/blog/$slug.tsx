@@ -9,6 +9,7 @@ import {
   HoverCardContent,
   HoverCardTrigger,
 } from "@/components/ui/hover-card";
+import { formatDate } from "date-fns";
 
 export const Route = createFileRoute("/blog/$slug")({
   component: BlogPage,
@@ -45,7 +46,7 @@ function BlogPage() {
 
         <div className="max-w-3xl mx-auto mb-10">
           <div className="text-sm font-medium text-zinc-500 mb-4">
-            {post.category} • {post.date}
+            {post.category} • {formatDate(post.date, "MMMM do, yyyy")}
           </div>
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
             {post.title}
@@ -98,7 +99,7 @@ function BlogPage() {
         <div className="max-w-4xl mx-auto mb-12">
           <div className="aspect-[16/9] bg-zinc-100 rounded-lg overflow-hidden">
             <img
-              src={post.image || "/placeholder.svg"}
+              src={post.image}
               alt={post.title}
               width={1200}
               height={600}
@@ -128,7 +129,7 @@ function BlogPage() {
                 >
                   <div className="aspect-video bg-zinc-100 overflow-hidden">
                     <img
-                      src={relatedPost.image || "/placeholder.svg"}
+                      src={relatedPost.image}
                       alt={relatedPost.title}
                       width={300}
                       height={200}
