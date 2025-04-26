@@ -2,80 +2,18 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Link } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
 import { Github } from "lucide-react";
+import { allProjects } from "content-collections";
 
 export const Route = createFileRoute("/projects/")({
   component: Page,
 });
 
-const projects = [
-  {
-    id: 1,
-    title: "Typography Portfolio",
-    description:
-      "A minimalist portfolio website for a typography designer, featuring a clean layout and beautiful typography.",
-    technologies: ["Next.js", "Tailwind CSS", "Framer Motion"],
-    image: "/placeholder.svg?height=600&width=800",
-    slug: "typography-portfolio",
-    type: "hosted", // hosted project
-  },
-  {
-    id: 2,
-    title: "E-commerce Platform",
-    description:
-      "A full-featured e-commerce platform with product management, cart functionality, and payment processing.",
-    technologies: ["React", "Node.js", "MongoDB", "Stripe"],
-    image: "/placeholder.svg?height=600&width=800",
-    slug: "ecommerce-platform",
-    type: "hosted", // hosted project
-  },
-  {
-    id: 3,
-    title: "Content Management System",
-    description:
-      "A custom CMS built for a publishing company, allowing easy content creation and management.",
-    technologies: ["Next.js", "GraphQL", "PostgreSQL"],
-    image: "/placeholder.svg?height=600&width=800",
-    slug: "content-management-system",
-    type: "hosted", // hosted project
-  },
-  {
-    id: 4,
-    title: "Algorithm Visualizer",
-    description:
-      "A tool for visualizing common algorithms like sorting, pathfinding, and graph traversal algorithms.",
-    technologies: ["JavaScript", "Canvas API", "Data Structures"],
-    githubUrl: "https://github.com/johndoe/algorithm-visualizer",
-    image: "/placeholder.svg?height=600&width=800",
-    type: "github", // GitHub-only project
-  },
-  {
-    id: 5,
-    title: "Compiler Design Project",
-    description:
-      "A simple compiler implementation that demonstrates lexical analysis, parsing, and code generation.",
-    technologies: ["C++", "LLVM", "Automata Theory"],
-    githubUrl: "https://github.com/johndoe/mini-compiler",
-    image: "/placeholder.svg?height=600&width=800",
-    type: "github", // GitHub-only project
-  },
-  {
-    id: 6,
-    title: "Operating System Kernel",
-    description:
-      "A minimal operating system kernel implementing basic process scheduling, memory management, and file systems.",
-    technologies: ["C", "Assembly", "OS Theory"],
-    githubUrl: "https://github.com/johndoe/mini-os",
-    image: "/placeholder.svg?height=600&width=800",
-    type: "github", // GitHub-only project
-  },
-];
-
 function Page() {
-  const hostedProjects = projects.filter(
-    (project) => project.type === "hosted"
+  const hostedProjects = allProjects.filter(
+    (project) => project.meta.type === "hosted",
   );
-  const githubProjects = projects.filter(
-    (project) => project.type === "github"
+  const githubProjects = allProjects.filter(
+    (project) => project.meta.type === "github",
   );
 
   return (
@@ -99,7 +37,7 @@ function Page() {
 
           <div className="grid gap-16 md:gap-24">
             {hostedProjects.map((project, index) => (
-              <div key={project.id} className="group">
+              <div key={project.slug} className="group">
                 <div
                   className={`grid md:grid-cols-2 gap-12 items-center ${index % 2 === 1 ? "md:grid-flow-dense" : ""}`}
                 >
@@ -131,7 +69,7 @@ function Page() {
                     >
                       <Link
                         to="/projects/$slug"
-                        params={{ slug: project.slug ?? "" }}
+                        params={{ slug: project.slug }}
                       >
                         View Project
                       </Link>
@@ -142,7 +80,7 @@ function Page() {
                   >
                     <div className="aspect-video bg-muted rounded-lg overflow-hidden transition-transform group-hover:scale-105 duration-500">
                       <img
-                        src={project.image || "/placeholder.svg"}
+                        src={project.featuredImage || "/placeholder.svg"}
                         alt={project.title}
                         width={800}
                         height={600}
@@ -173,12 +111,12 @@ function Page() {
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {githubProjects.map((project) => (
               <div
-                key={project.id}
+                key={project.slug}
                 className="group bg-card border border-border rounded-lg overflow-hidden hover:shadow-lg transition-shadow"
               >
                 <div className="aspect-video bg-muted overflow-hidden">
                   <img
-                    src={project.image || "/placeholder.svg"}
+                    src={project.featuredImage}
                     alt={project.title}
                     width={800}
                     height={600}

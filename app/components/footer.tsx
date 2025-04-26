@@ -37,6 +37,14 @@ export function Footer() {
               </li>
               <li>
                 <Link
+                  to="/snippets"
+                  className="text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  Snippets
+                </Link>
+              </li>
+              <li>
+                <Link
                   to="/blog"
                   className="text-muted-foreground hover:text-foreground transition-colors"
                 >

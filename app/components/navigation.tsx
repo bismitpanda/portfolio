@@ -12,6 +12,7 @@ export function Navigation() {
   const routes = [
     { name: "Home", path: "/" },
     { name: "Projects", path: "/projects" },
+    { name: "Snippets", path: "/snippets" },
     { name: "Blog", path: "/blog" },
     { name: "Contact", path: "/#contact" },
   ];
@@ -36,7 +37,7 @@ export function Navigation() {
                 "link-underline text-lg transition-colors",
                 pathname === route.path
                   ? "text-foreground"
-                  : "text-muted-foreground hover:text-foreground"
+                  : "text-muted-foreground hover:text-foreground",
               )}
             >
               {route.name}
@@ -48,7 +49,9 @@ export function Navigation() {
           <Button
             variant="ghost"
             size="icon"
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
+            onClick={() => {
+              setIsMenuOpen(!isMenuOpen);
+            }}
           >
             {isMenuOpen ? (
               <X className="h-6 w-6" />
@@ -70,9 +73,11 @@ export function Navigation() {
                   "text-2xl py-2 transition-colors",
                   pathname === route.path
                     ? "text-foreground"
-                    : "text-muted-foreground hover:text-foreground"
+                    : "text-muted-foreground hover:text-foreground",
                 )}
-                onClick={() => setIsMenuOpen(false)}
+                onClick={() => {
+                  setIsMenuOpen(false);
+                }}
               >
                 {route.name}
               </Link>

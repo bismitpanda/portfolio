@@ -6,7 +6,7 @@ import type { MermaidConfig } from "mermaid";
 export function Mermaid({ chart }: { chart: string }) {
   const id = useId();
   const [svg, setSvg] = useState("");
-  const containerRef = useRef<HTMLDivElement>(null!);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     void renderChart();
@@ -27,7 +27,7 @@ export function Mermaid({ chart }: { chart: string }) {
         const { svg } = await mermaid.render(
           id.replaceAll(":", ""),
           chart.replaceAll("\\n", "\n"),
-          containerRef.current
+          containerRef.current ?? undefined,
         );
         setSvg(svg);
       } catch (error) {

@@ -11,13 +11,22 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
+import { Route as SnippetsImport } from './routes/snippets'
 import { Route as IndexImport } from './routes/index'
 import { Route as ProjectsIndexImport } from './routes/projects/index'
+import { Route as CategoriesIndexImport } from './routes/categories/index'
 import { Route as BlogIndexImport } from './routes/blog/index'
 import { Route as ProjectsSlugImport } from './routes/projects/$slug'
+import { Route as CategoriesSlugImport } from './routes/categories/$slug'
 import { Route as BlogSlugImport } from './routes/blog/$slug'
 
 // Create/Update Routes
+
+const SnippetsRoute = SnippetsImport.update({
+  id: '/snippets',
+  path: '/snippets',
+  getParentRoute: () => rootRoute,
+} as any)
 
 const IndexRoute = IndexImport.update({
   id: '/',
@@ -31,6 +40,12 @@ const ProjectsIndexRoute = ProjectsIndexImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
+const CategoriesIndexRoute = CategoriesIndexImport.update({
+  id: '/categories/',
+  path: '/categories/',
+  getParentRoute: () => rootRoute,
+} as any)
+
 const BlogIndexRoute = BlogIndexImport.update({
   id: '/blog/',
   path: '/blog/',
@@ -40,6 +55,12 @@ const BlogIndexRoute = BlogIndexImport.update({
 const ProjectsSlugRoute = ProjectsSlugImport.update({
   id: '/projects/$slug',
   path: '/projects/$slug',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const CategoriesSlugRoute = CategoriesSlugImport.update({
+  id: '/categories/$slug',
+  path: '/categories/$slug',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -60,11 +81,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexImport
       parentRoute: typeof rootRoute
     }
+    '/snippets': {
+      id: '/snippets'
+      path: '/snippets'
+      fullPath: '/snippets'
+      preLoaderRoute: typeof SnippetsImport
+      parentRoute: typeof rootRoute
+    }
     '/blog/$slug': {
       id: '/blog/$slug'
       path: '/blog/$slug'
       fullPath: '/blog/$slug'
       preLoaderRoute: typeof BlogSlugImport
+      parentRoute: typeof rootRoute
+    }
+    '/categories/$slug': {
+      id: '/categories/$slug'
+      path: '/categories/$slug'
+      fullPath: '/categories/$slug'
+      preLoaderRoute: typeof CategoriesSlugImport
       parentRoute: typeof rootRoute
     }
     '/projects/$slug': {
@@ -81,6 +116,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BlogIndexImport
       parentRoute: typeof rootRoute
     }
+    '/categories/': {
+      id: '/categories/'
+      path: '/categories'
+      fullPath: '/categories'
+      preLoaderRoute: typeof CategoriesIndexImport
+      parentRoute: typeof rootRoute
+    }
     '/projects/': {
       id: '/projects/'
       path: '/projects'
@@ -95,57 +137,91 @@ declare module '@tanstack/react-router' {
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/snippets': typeof SnippetsRoute
   '/blog/$slug': typeof BlogSlugRoute
+  '/categories/$slug': typeof CategoriesSlugRoute
   '/projects/$slug': typeof ProjectsSlugRoute
   '/blog': typeof BlogIndexRoute
+  '/categories': typeof CategoriesIndexRoute
   '/projects': typeof ProjectsIndexRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/snippets': typeof SnippetsRoute
   '/blog/$slug': typeof BlogSlugRoute
+  '/categories/$slug': typeof CategoriesSlugRoute
   '/projects/$slug': typeof ProjectsSlugRoute
   '/blog': typeof BlogIndexRoute
+  '/categories': typeof CategoriesIndexRoute
   '/projects': typeof ProjectsIndexRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
+  '/snippets': typeof SnippetsRoute
   '/blog/$slug': typeof BlogSlugRoute
+  '/categories/$slug': typeof CategoriesSlugRoute
   '/projects/$slug': typeof ProjectsSlugRoute
   '/blog/': typeof BlogIndexRoute
+  '/categories/': typeof CategoriesIndexRoute
   '/projects/': typeof ProjectsIndexRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/blog/$slug' | '/projects/$slug' | '/blog' | '/projects'
+  fullPaths:
+    | '/'
+    | '/snippets'
+    | '/blog/$slug'
+    | '/categories/$slug'
+    | '/projects/$slug'
+    | '/blog'
+    | '/categories'
+    | '/projects'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/blog/$slug' | '/projects/$slug' | '/blog' | '/projects'
+  to:
+    | '/'
+    | '/snippets'
+    | '/blog/$slug'
+    | '/categories/$slug'
+    | '/projects/$slug'
+    | '/blog'
+    | '/categories'
+    | '/projects'
   id:
     | '__root__'
     | '/'
+    | '/snippets'
     | '/blog/$slug'
+    | '/categories/$slug'
     | '/projects/$slug'
     | '/blog/'
+    | '/categories/'
     | '/projects/'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  SnippetsRoute: typeof SnippetsRoute
   BlogSlugRoute: typeof BlogSlugRoute
+  CategoriesSlugRoute: typeof CategoriesSlugRoute
   ProjectsSlugRoute: typeof ProjectsSlugRoute
   BlogIndexRoute: typeof BlogIndexRoute
+  CategoriesIndexRoute: typeof CategoriesIndexRoute
   ProjectsIndexRoute: typeof ProjectsIndexRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  SnippetsRoute: SnippetsRoute,
   BlogSlugRoute: BlogSlugRoute,
+  CategoriesSlugRoute: CategoriesSlugRoute,
   ProjectsSlugRoute: ProjectsSlugRoute,
   BlogIndexRoute: BlogIndexRoute,
+  CategoriesIndexRoute: CategoriesIndexRoute,
   ProjectsIndexRoute: ProjectsIndexRoute,
 }
 
@@ -160,23 +236,35 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
+        "/snippets",
         "/blog/$slug",
+        "/categories/$slug",
         "/projects/$slug",
         "/blog/",
+        "/categories/",
         "/projects/"
       ]
     },
     "/": {
       "filePath": "index.tsx"
     },
+    "/snippets": {
+      "filePath": "snippets.tsx"
+    },
     "/blog/$slug": {
       "filePath": "blog/$slug.tsx"
+    },
+    "/categories/$slug": {
+      "filePath": "categories/$slug.tsx"
     },
     "/projects/$slug": {
       "filePath": "projects/$slug.tsx"
     },
     "/blog/": {
       "filePath": "blog/index.tsx"
+    },
+    "/categories/": {
+      "filePath": "categories/index.tsx"
     },
     "/projects/": {
       "filePath": "projects/index.tsx"

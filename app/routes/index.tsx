@@ -3,12 +3,13 @@ import { ArrowRight, Github, Linkedin, Mail, Twitter } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { allBlogs } from "content-collections";
 import { useEffect, useState } from "react";
+import { formatDate } from "date-fns";
 
 export const Route = createFileRoute("/")({
-  component: Home,
+  component: Page,
 });
 
-function Home() {
+function Page() {
   const [currIdx, setCurrIdx] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
   const names = [
@@ -26,7 +27,9 @@ function Home() {
       }, 300);
     }, 3000);
 
-    return () => clearInterval(interval);
+    return () => {
+      clearInterval(interval);
+    };
   }, []);
 
   return (
@@ -102,12 +105,7 @@ function Home() {
       <section id="about" className="container-custom section-spacing">
         <div className="grid md:grid-cols-3 gap-12">
           <div>
-            <h2 className="heading-lg mb-6 relative">
-              About
-              <span className="absolute -z-10 text-[10rem] font-bold text-muted/20 -top-20 -left-6 opacity-80">
-                01
-              </span>
-            </h2>
+            <h2 className="heading-lg mb-6 relative">About</h2>
           </div>
           <div className="md:col-span-2">
             <p className="body-lg mb-6">
@@ -126,12 +124,7 @@ function Home() {
 
       <section className="container-custom section-spacing">
         <div className="flex flex-col md:flex-row justify-between items-baseline mb-16">
-          <h2 className="heading-lg relative">
-            Featured Projects
-            <span className="absolute -z-10 text-[10rem] font-bold text-muted/20 -top-20 -left-6 opacity-80">
-              02
-            </span>
-          </h2>
+          <h2 className="heading-lg relative">Featured Projects</h2>
           <Link
             to="/projects"
             className="link-underline text-lg text-muted-foreground mt-4 md:mt-0"
@@ -192,12 +185,7 @@ function Home() {
       <section className="container-custom section-spacing">
         <div className="grid md:grid-cols-3 gap-12">
           <div>
-            <h2 className="heading-lg mb-6 relative">
-              Skills
-              <span className="absolute -z-10 text-[10rem] font-bold text-muted/20 -top-20 -left-6 opacity-80">
-                04
-              </span>
-            </h2>
+            <h2 className="heading-lg mb-6 relative">Skills</h2>
           </div>
           <div className="md:col-span-2">
             <div className="grid grid-cols-2 gap-y-8 gap-x-16">
@@ -229,12 +217,7 @@ function Home() {
 
       <section className="container-custom section-spacing">
         <div className="flex flex-col md:flex-row justify-between items-baseline mb-16">
-          <h2 className="heading-lg relative">
-            Recent Articles
-            <span className="absolute -z-10 text-[10rem] font-bold text-muted/20 -top-20 -left-6 opacity-80">
-              05
-            </span>
-          </h2>
+          <h2 className="heading-lg relative">Recent Articles</h2>
           <Link
             to="/blog"
             className="link-underline text-lg text-muted-foreground mt-4 md:mt-0"
@@ -256,7 +239,7 @@ function Home() {
               <div className="aspect-video bg-muted overflow-hidden">
                 <img
                   src="/placeholder.svg?height=200&width=400"
-                  alt={`${blog.title}`}
+                  alt={blog.title}
                   width={400}
                   height={200}
                   className="w-full h-full object-cover transition-transform group-hover:scale-105 duration-500"
@@ -264,7 +247,7 @@ function Home() {
               </div>
               <div className="p-6">
                 <div className="text-sm text-muted-foreground mb-2">
-                  {blog.date}
+                  {formatDate(blog.date, "MMMM do, yyyy")}
                 </div>
                 <h3 className="text-2xl font-bold mb-2 group-hover:text-primary transition-colors">
                   {blog.title}

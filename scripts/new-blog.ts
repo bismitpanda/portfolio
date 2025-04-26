@@ -3,18 +3,18 @@ import { writeFile } from "fs/promises";
 import { formatDate } from "date-fns";
 import prompts from "prompts";
 
-async function createBlogPost() {
+async function createBlog() {
   const response = await prompts([
     {
       type: "text",
       name: "title",
-      message: "Enter blog post title:",
+      message: "Enter blog title:",
     },
     {
       type: "text",
       name: "excerpt",
       message: "Enter blog excerpt:",
-      initial: "This is an excerpt from the post.",
+      initial: "This is an excerpt from the blog.",
     },
     {
       type: "text",
@@ -37,15 +37,14 @@ title: "${response.title}"
 excerpt: "${response.excerpt}"
 date: "${formatDate(new Date(), "yyyy-MM-dd")}"
 category: "${response.category}"
-slug: "${slug}"
 image: "${response.image}"
 ---`;
 
   await writeFile(`content/blogs/${slug}.mdx`, frontmatter);
-  console.log(`✅ Blog post created: content/blogs/${slug}.mdx`);
+  console.log(`✅ Blog created: content/blogs/${slug}.mdx`);
 }
 
-createBlogPost().catch((error) => {
-  console.error("Error creating blog post:", error);
+createBlog().catch((error: Error) => {
+  console.error("Error creating blog:", error.message);
   process.exit(1);
 });

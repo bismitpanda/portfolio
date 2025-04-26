@@ -1,35 +1,27 @@
-import { createFileRoute, Link, redirect } from "@tanstack/react-router";
-import { getRouteApi } from "@tanstack/react-router";
+import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { allBlogs } from "content-collections";
 import { Mdx } from "@/components/mdx";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Home } from "lucide-react";
 import {
   HoverCard,
   HoverCardContent,
   HoverCardTrigger,
 } from "@/components/ui/hover-card";
+import { formatDate } from "date-fns";
 
 export const Route = createFileRoute("/blog/$slug")({
-  component: BlogPage,
-  beforeLoad: async ({ params }) => {
+  component: Page,
+  notFoundComponent: NotFound,
+  beforeLoad: ({ params }) => {
     const blog = allBlogs.find((blog) => blog.slug === params.slug);
-
-    if (!blog) {
-      throw redirect({
-        to: "/blog",
-      });
-    }
-
-    return {
-      post: blog,
-    };
+    if (!blog) throw notFound();
+    return { blog };
   },
 });
 
-function BlogPage() {
-  const { useRouteContext } = getRouteApi("/blog/$slug");
-  const { post } = useRouteContext();
+function Page() {
+  const { blog } = Route.useRouteContext();
 
   return (
     <div>
@@ -45,10 +37,13 @@ function BlogPage() {
 
         <div className="max-w-3xl mx-auto mb-10">
           <div className="text-sm font-medium text-zinc-500 mb-4">
-            {post.category} • {post.date}
+            <Link to={`/categories/$slug`} params={{ slug: blog.categorySlug }}>
+              {blog.category}
+            </Link>{" "}
+            • {formatDate(blog.date, "MMMM do, yyyy")}
           </div>
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
-            {post.title}
+            {blog.title}
           </h1>
           <div className="flex items-center gap-4">
             <div className="w-10 h-10 rounded-full bg-zinc-200 overflow-hidden">
@@ -98,8 +93,8 @@ function BlogPage() {
         <div className="max-w-4xl mx-auto mb-12">
           <div className="aspect-[16/9] bg-zinc-100 rounded-lg overflow-hidden">
             <img
-              src={post.image || "/placeholder.svg"}
-              alt={post.title}
+              src={blog.image || "/placeholder.svg"}
+              alt={blog.title}
               width={1200}
               height={600}
               className="w-full h-full object-cover"
@@ -108,7 +103,7 @@ function BlogPage() {
         </div>
 
         <article className="prose prose-lg max-w-3xl mx-auto py-8">
-          <Mdx code={post.html} />
+          <Mdx code={blog.html} />
         </article>
 
         <div className="max-w-3xl mx-auto mt-16">
@@ -117,19 +112,19 @@ function BlogPage() {
             {allBlogs
               .filter(
                 (blog) =>
-                  blog.category === post.category && blog.slug != post.slug
+                  blog.category === blog.category && blog.slug != blog.slug,
               )
-              .map((relatedPost) => (
+              .map((relatedBlogs) => (
                 <Link
-                  key={relatedPost.slug}
+                  key={relatedBlogs.slug}
                   to="/blog/$slug"
-                  params={{ slug: relatedPost.slug }}
+                  params={{ slug: relatedBlogs.slug }}
                   className="group block hover:scale-[1.01] bg-white rounded-lg overflow-hidden border border-zinc-200 transition-transform"
                 >
                   <div className="aspect-video bg-zinc-100 overflow-hidden">
                     <img
-                      src={relatedPost.image || "/placeholder.svg"}
-                      alt={relatedPost.title}
+                      src={relatedBlogs.image || "/placeholder.svg"}
+                      alt={relatedBlogs.title}
                       width={300}
                       height={200}
                       className="w-full h-full object-cover transition-transform group-hover:scale-105 duration-500"
@@ -137,7 +132,7 @@ function BlogPage() {
                   </div>
                   <div className="p-6">
                     <h3 className="text-xl font-bold text-zinc-600">
-                      {relatedPost.title}
+                      {relatedBlogs.title}
                     </h3>
                   </div>
                 </Link>
@@ -145,6 +140,57 @@ function BlogPage() {
           </div>
         </div>
       </article>
+    </div>
+  );
+}
+
+function NotFound() {
+  return (
+    <div className="pt-20">
+      <div className="container-custom min-h-[80vh] flex items-center justify-center">
+        <div className="max-w-2xl mx-auto text-center">
+          <h1 className="heading-xl mb-4">404</h1>
+          <h2 className="heading-md mb-6">Article Not Found</h2>
+
+          <p className="body-lg text-muted-foreground mb-8">
+            The blog post you're looking for seems to have vanished into the
+            digital ether. Perhaps it was moved, renamed, or is still being
+            written.
+          </p>
+
+          <div className="flex flex-wrap gap-4 justify-center">
+            <Button asChild size="lg">
+              <Link to="/blog" className="flex items-center gap-2">
+                <ArrowLeft className="h-4 w-4" />
+                <span>Back to Blog</span>
+              </Link>
+            </Button>
+            <Button asChild variant="outline" size="lg">
+              <Link to="/" className="flex items-center gap-2">
+                <Home className="h-4 w-4" />
+                <span>Go Home</span>
+              </Link>
+            </Button>
+          </div>
+
+          <div className="mt-16">
+            <h3 className="text-xl font-bold mb-4">Popular Articles</h3>
+            <ul className="space-y-2">
+              {allBlogs.slice(0, 3).map((blog) => (
+                <li key={blog.slug}>
+                  <Link
+                    to="/blog/$slug"
+                    params={{ slug: blog.slug }}
+                    className="link-underline text-lg"
+                  >
+                    {blog.title}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

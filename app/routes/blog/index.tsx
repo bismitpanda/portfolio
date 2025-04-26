@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Link } from "@tanstack/react-router";
 import { allBlogs } from "content-collections";
 import { Button } from "@/components/ui/button";
+import { formatDate } from "date-fns";
 
 export const Route = createFileRoute("/blog/")({
   component: Page,
@@ -28,7 +29,13 @@ function Page() {
             <div className="grid md:grid-cols-2 gap-8 items-center">
               <div className="order-2 md:order-1">
                 <div className="text-sm font-medium text-zinc-500 mb-2">
-                  {allBlogs[0].category} • {allBlogs[0].date}
+                  <Link
+                    to={`/categories/$slug`}
+                    params={{ slug: allBlogs[0].categorySlug }}
+                  >
+                    {allBlogs[0].category}
+                  </Link>{" "}
+                  • {formatDate(allBlogs[0].date, "MMMM do, yyyy")}
                 </div>
                 <h2 className="text-4xl md:text-5xl font-bold mb-4 group-hover:text-zinc-600 transition-colors">
                   {allBlogs[0].title}
@@ -60,17 +67,17 @@ function Page() {
         </div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {allBlogs.slice(1).map((post) => (
+          {allBlogs.slice(1).map((blog) => (
             <Link
-              key={post.slug}
+              key={blog.slug}
               to="/blog/$slug"
-              params={{ slug: post.slug }}
+              params={{ slug: blog.slug }}
               className="group block bg-white rounded-lg overflow-hidden border border-zinc-200 hover:shadow-lg transition-shadow"
             >
               <div className="aspect-video bg-zinc-100 overflow-hidden">
                 <img
-                  src={post.image || "/placeholder.svg"}
-                  alt={post.title}
+                  src={blog.image || "/placeholder.svg"}
+                  alt={blog.title}
                   width={400}
                   height={200}
                   className="w-full h-full object-cover transition-transform group-hover:scale-105 duration-500"
@@ -78,12 +85,18 @@ function Page() {
               </div>
               <div className="p-6">
                 <div className="text-sm font-medium text-zinc-500 mb-2">
-                  {post.category} • {post.date}
+                  <Link
+                    to={`/categories/$slug`}
+                    params={{ slug: blog.categorySlug }}
+                  >
+                    {blog.category}
+                  </Link>{" "}
+                  • {formatDate(blog.date, "MMMM do, yyyy")}
                 </div>
                 <h3 className="text-2xl font-bold mb-2 group-hover:text-zinc-600 transition-colors">
-                  {post.title}
+                  {blog.title}
                 </h3>
-                <p className="text-zinc-600">{post.excerpt}</p>
+                <p className="text-zinc-600">{blog.excerpt}</p>
               </div>
             </Link>
           ))}

@@ -137,7 +137,6 @@
     counter-increment: line;
     content: counter(line);
 
-    /* Other styling */
     display: inline-block;
     width: 0.75rem;
     margin-right: 2rem;
