@@ -27,7 +27,7 @@ const categories = defineCollection({
   transform: (data, context) => {
     const count = context
       .documents(blogs)
-      .filter((blog) => blog.category === data.slug).length;
+      .filter((blog) => blog.category === data.name).length;
     return { ...data, count };
   },
 });

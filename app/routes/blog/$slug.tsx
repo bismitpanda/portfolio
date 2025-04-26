@@ -1,4 +1,9 @@
-import { createFileRoute, Link, redirect } from "@tanstack/react-router";
+import {
+  createFileRoute,
+  Link,
+  notFound,
+  redirect,
+} from "@tanstack/react-router";
 import { getRouteApi } from "@tanstack/react-router";
 import { allBlogs } from "content-collections";
 import { Mdx } from "@/components/mdx";
@@ -17,9 +22,7 @@ export const Route = createFileRoute("/blog/$slug")({
     const blog = allBlogs.find((blog) => blog.slug === params.slug);
 
     if (!blog) {
-      throw redirect({
-        to: "/blog",
-      });
+      throw notFound();
     }
 
     return {
@@ -46,7 +49,10 @@ function BlogPage() {
 
         <div className="max-w-3xl mx-auto mb-10">
           <div className="text-sm font-medium text-zinc-500 mb-4">
-            {post.category} • {formatDate(post.date, "MMMM do, yyyy")}
+            <Link to="/category/$slug" params={{ slug: post.categorySlug }}>
+              {post.category}
+            </Link>{" "}
+            • {formatDate(post.date, "MMMM do, yyyy")}
           </div>
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
             {post.title}

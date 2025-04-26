@@ -29,8 +29,13 @@ function Page() {
             <div className="grid md:grid-cols-2 gap-8 items-center">
               <div className="order-2 md:order-1">
                 <div className="text-sm font-medium text-zinc-500 mb-2">
-                  {allBlogs[0].category} •{" "}
-                  {formatDate(allBlogs[0].date, "MMMM do, yyyy")}
+                  <Link
+                    to="/category/$slug"
+                    params={{ slug: allBlogs[0].categorySlug }}
+                  >
+                    {allBlogs[0].category}
+                  </Link>{" "}
+                  • {formatDate(allBlogs[0].date, "MMMM do, yyyy")}
                 </div>
                 <h2 className="text-4xl md:text-5xl font-bold mb-4 group-hover:text-zinc-600 transition-colors">
                   {allBlogs[0].title}
@@ -80,7 +85,13 @@ function Page() {
               </div>
               <div className="p-6">
                 <div className="text-sm font-medium text-zinc-500 mb-2">
-                  {post.category} • {formatDate(post.date, "MMMM do, yyyy")}
+                  <Link
+                    to="/category/$slug"
+                    params={{ slug: post.categorySlug }}
+                  >
+                    {post.category}
+                  </Link>{" "}
+                  • {formatDate(post.date, "MMMM do, yyyy")}
                 </div>
                 <h3 className="text-2xl font-bold mb-2 group-hover:text-zinc-600 transition-colors">
                   {post.title}
