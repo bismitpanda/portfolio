@@ -13,6 +13,7 @@ import {
 } from "@shikijs/transformers";
 import { visit } from "unist-util-visit";
 import slugify from "slugify";
+import { codeToHtml } from "shiki";
 
 const categories = defineCollection({
   name: "categories",
@@ -95,6 +96,14 @@ const snippets = defineCollection({
     language: z.string(),
     date: z.coerce.date(),
   }),
+  transform: async (data) => {
+    const html = await codeToHtml(data.code, {
+      lang: data.language.toLowerCase(),
+      theme: "material-theme-darker",
+    });
+
+    return { ...data, html };
+  },
 });
 
 export default defineConfig({

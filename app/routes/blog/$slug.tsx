@@ -1,9 +1,4 @@
-import {
-  createFileRoute,
-  Link,
-  notFound,
-  redirect,
-} from "@tanstack/react-router";
+import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { getRouteApi } from "@tanstack/react-router";
 import { allBlogs } from "content-collections";
 import { Mdx } from "@/components/mdx";

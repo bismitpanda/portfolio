@@ -121,6 +121,10 @@
     @apply bg-background text-foreground;
   }
 
+  pre.shiki {
+    @apply font-mono;
+  }
+
   code[data-theme*=" "],
   code[data-theme*=" "] span {
     color: var(--shiki-dark);
